@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Заголовок сторінки</title>
+</head>
+<body>
+</body>
+</html>
+<script>
+	// # 1
+	const pageTitle = document.createElement('h1');
+	pageTitle.innerText = 'Вставлений h1';
+	document.body.appendChild(pageTitle);
+
+	// # 2
+	const paragraph = document.createElement('p');
+	paragraph.innerText = 'Вставлений текстовий блок';
+	document.body.appendChild(paragraph);
+
+	// # 3
+	const list = document.createElement('ul');
+	for (let i = 1; i <= 3; i++) {
+		const listItem = document.createElement('li');
+		listItem.innerText = `Елемент списку ${i}`;
+		list.appendChild(listItem);
+	}
+	document.body.appendChild(list);
+
+	// # 4
+	document.body.style.backgroundColor = 'lightgray';
+
+	// # 5
+	const button = document.createElement('button');
+	button.innerText = 'Кнопка';
+	document.body.appendChild(button);
+
+	// # 6
+	pageTitle.style.fontSize = '10px';
+
+	// # 7
+	//document.body.removeChild(paragraph)
+	//paragraph.remove();
+
+	// # 8
+	const newItem = document.createElement('li');
+	newItem.innerText = `Елемент списку ${list.children.length + 1}`
+	list.appendChild(newItem);
+
+	// # 9
+	list.insertBefore(list.children[2], list.children[1]);
+
+	// # 10
+	button.innerText = "Нова назва";
+
+	// # 11
+	const form1       = document.createElement('form'),
+	      nameInput   = document.createElement('input'),
+	      emailInput  = document.createElement('input'),
+	      form1submit = document.createElement('button');
+
+	nameInput.type = 'text';
+	emailInput.type = 'email';
+	nameInput.placeholder = 'Ім\'я';
+	emailInput.placeholder = 'Пошта';
+
+	form1.innerText = "Форма 1";
+	form1.style.marginTop = '10px';
+
+	form1submit.type = 'submit';
+	form1submit.innerText = 'submit';
+
+	document.body.appendChild(form1);
+	form1.appendChild(document.createElement('br'))
+	form1.append(nameInput, emailInput);
+	form1.appendChild(form1submit);
+
+	form1submit.addEventListener('click', function (event) {
+		if (nameInput.value.length && emailInput.value.length) {
+			alert('Перемога');
+		} else {
+			event.preventDefault();
+		}
+	});
+
+	// # 12
+	const form2         = document.createElement('form'),
+	      passwordInput = document.createElement('input'),
+	      form2submit   = document.createElement('button');
+
+	passwordInput.type = 'password';
+	passwordInput.placeholder = 'Пароль';
+
+	form2.innerText = "Форма 2";
+	form2.style.marginTop = '10px';
+
+	form2submit.type = 'submit';
+	form2submit.innerText = 'submit';
+
+	document.body.appendChild(form2);
+	form2.appendChild(document.createElement('br'))
+	form2.appendChild(passwordInput);
+	form2.appendChild(form2submit);
+
+	function isValidPassword(password) {
+		const pattern = /^(?=.*[0-9])(?=.*[@#$%^&+=])(?=\S+).{8,}$/;
+		return pattern.test(password);
+	}
+
+	form2submit.addEventListener('click', function (event) {
+		if (isValidPassword(passwordInput.value)) {
+			alert('Перемога');
+		} else {
+			event.preventDefault();
+		}
+	});
+
+	// # 13
+	const form3         = document.createElement('form'),
+	      nameInput3    = document.createElement('input'),
+	      emailInput3   = document.createElement('input'),
+	      messageInput3 = document.createElement('input'),
+	      form3submit   = document.createElement('button');
+
+	nameInput3.type = 'text';
+	emailInput3.type = 'email';
+	messageInput3.type = 'text';
+	nameInput3.placeholder = 'Ім\'я';
+	emailInput3.placeholder = 'Пошта';
+	messageInput3.placeholder = 'Повідомлення';
+
+	form3.innerText = "Форма 3";
+	form3.style.marginTop = '10px';
+
+	form3submit.type = 'submit';
+	form3submit.innerText = 'submit';
+
+	document.body.appendChild(form3);
+	form3.appendChild(document.createElement('br'))
+	form3.append(nameInput3, emailInput3, messageInput3);
+	form3.appendChild(form3submit);
+
+	form3submit.addEventListener('click', function (event) {
+		if (nameInput3.value.length && emailInput3.value.length && messageInput3.value.length) {
+			alert('Перемога');
+			form3.reset();
+		} else {
+			event.preventDefault();
+		}
+	});
+
+</script>
