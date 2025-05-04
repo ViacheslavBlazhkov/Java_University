@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Bank</title>
+</head>
+<body>
+	<p>Money movement report</p>
+	<table border="1">
+		<tr>
+			<th>type</th>
+			<th>amount</th>
+			<th>date</th>
+		</tr>
+		<tr th:each="transaction : ${transactions}">
+			<th th:utext="${transaction.getType()}">...</th>
+			<th th:utext="${transaction.getAmount()}">...</th>
+			<th th:utext="${transaction.getTransactionDate()}">...</th>
+		</tr>
+	</table>
+	<p><a href="/">Back to main menu</a></p>
+</body>
+</html>

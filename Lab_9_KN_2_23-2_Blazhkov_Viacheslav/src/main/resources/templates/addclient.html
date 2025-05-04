@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Bank</title>
+</head>
+<body>
+	<p>Add Client</p>
+	<form method="POST" th:action="@{/addclient}" th:object="${client}">
+		<div th:if="${#fields.hasErrors()}">
+			<span class="validationError">
+				Please correct the problems below and resubmit.
+			</span>
+		</div>
+		<label for="name">Name: </label>
+		<input id="name" type="text" th:field="*{name}" />
+		<span class="validationError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span>
+		<br/>
+		<label for="email">Email:</label>
+		<input id="email" type="text" th:field="*{email}">
+		<span class="validationError" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</span>
+		<br>
+		<input type="submit" value="Submit order">
+	</form>
+	<p><a href="/clients">Back to clients</a></p>
+	<p><a href="/">Back to main menu</a></p>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Bank</title>
+</head>
+<body>
+	<p>Deposit money</p>
+	<form method="POST" th:action="@{/depositmoney}" th:object="${depositRequest}">
+		<div th:if="${#fields.hasErrors()}">
+			<span class="validationError">
+				Please correct the problems below and resubmit.
+			</span>
+		</div>
+		<label for="client">Client:</label>
+		<select id="client" th:field="*{userId}">
+			<option value="-1">select option</option>
+			<option th:each="option : ${clients}" th:value="${option.id}" th:text="${option.email}"></option>
+		</select>
+		<br>
+		<label for="amount">Amount:</label>
+		<input id="amount" type="text" th:field="*{amount}">
+		<span class="validationError" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Amount Error</span>
+		<br>
+		<label for="day">Day:</label>
+		<input id="day" type="text" th:field="*{day}">
+		<span class="validationError" th:if="${#fields.hasErrors('day')}" th:errors="*{day}">Day Error</span>
+		<br>
+		<label for="month">Month:</label>
+		<input id="month" type="text" th:field="*{month}">
+		<span class="validationError" th:if="${#fields.hasErrors('month')}" th:errors="*{month}">Month Error</span>
+		<br>
+		<label for="year">Year:</label>
+		<input id="year" type="text" th:field="*{year}">
+		<span class="validationError" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Year Error</span>
+		<br>
+		<input type="submit" value="Submit"/>
+	</form>
+	<p><a href="/">Back to main menu</a></p>
+</body>
+</html>

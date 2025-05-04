@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Bank</title>
+</head>
+<body>
+	<p>Clients</p>
+	<table border="1">
+		<tr>
+			<th>name</th>
+			<th>id</th>
+			<th>email</th>
+			<th>balance</th>
+		</tr>
+		<tr th:each="client : ${bank.clients}">
+			<th th:utext="${client.name}">...</th>
+			<th><a th:href="@{'/client?clientId='+${client.id}}"
+					th:utext="${client.id}">...</a></th>
+			<th th:utext="${client.email}">...</th>
+			<th th:utext="${client.getUserMoney()}+'$'">...</th>
+		</tr>
+	</table>
+	<p><a href="/">Back to main menu</a></p>
+</body>
+</html>
