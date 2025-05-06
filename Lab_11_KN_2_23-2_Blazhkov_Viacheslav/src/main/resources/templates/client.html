@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Bank</title>
+</head>
+<body>
+	<p>Client</p>
+	<div id="tableContainer">
+		...Loading
+	</div>
+	<p><a href="/clients">Back to clients</a></p>
+	<p><a href="/">Back to menu</a></p>
+</body>
+<script>
+	const clientId = [[${clientId}]]
+	document.addEventListener("DOMContentLoaded", function () {
+		loadClient();
+	});
+
+	function loadClient() {
+		const request = new XMLHttpRequest();
+
+		try {
+			request.open("GET", 'http://localhost:8080/api/clients/' + clientId);
+			request.responseType = 'json';
+			request.onreadystatechange = function () {
+				if (this.readyState === 4 && this.status === 200) {
+					renderClient(this.response);
+				}
+			};
+			request.send();
+		} catch (e) {
+			renderError();
+		}
+
+		function renderClient(client) {
+			const tableContainer = document.getElementById("tableContainer"),
+			      table          = document.createElement("table"),
+			      header         = document.createElement("tr");
+
+			header.innerHTML = "<th>name</th><th>date</th><th>amount</th><th>type</th>";
+			table.appendChild(header);
+
+			for (let i = 0; i < client.transactions.length; i++) {
+				const transaction = client.transactions[i],
+				      row         = document.createElement("tr"),
+				      nameColumn  = document.createElement("td"),
+				      dateColumn  = document.createElement("td"),
+				      moneyColumn = document.createElement("td"),
+				      typeColumn  = document.createElement("td");
+
+				nameColumn.innerText = client.name;
+				dateColumn.innerText = transaction.transactionDate.day + '-' + transaction.transactionDate.month + '-' + transaction.transactionDate.year;
+				moneyColumn.innerText = transaction.amount;
+				typeColumn.innerText = transaction.type;
+
+				row.appendChild(nameColumn);
+				row.appendChild(dateColumn);
+				row.appendChild(moneyColumn);
+				row.appendChild(typeColumn);
+				table.appendChild(row);
+			}
+			tableContainer.replaceWith(table);
+		}
+	}
+</script>
+</html>

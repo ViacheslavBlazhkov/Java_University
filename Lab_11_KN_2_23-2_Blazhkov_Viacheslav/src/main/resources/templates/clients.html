@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Bank</title>
+</head>
+<body>
+	<p>Clients</p>
+	<div id="tableContainer">
+		...Loading
+	</div>
+	<p>
+		<a href="/">Back to main menu</a>
+	</p>
+</body>
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		loadClients();
+	});
+
+	function loadClients() {
+		const request = new XMLHttpRequest();
+		try {
+			request.open('GET', 'http://localhost:8080/api/clients', true);
+			request.responseType = 'json';
+			request.onreadystatechange = function () {
+				if (this.readyState === 4 && this.status === 200) {
+					renderClients(this.response);
+				}
+			};
+			request.send();
+		} catch (e) {
+			renderError();
+		}
+	}
+
+	function renderError() {
+		const tableContainer = document.getElementById('tableContainer');
+		tableContainer.innerText = "Something went wrong";
+	}
+
+	function renderClients(clients) {
+		const tableContainer = document.getElementById('tableContainer'),
+		      table          = document.createElement('table'),
+		      header         = document.createElement('tr');
+
+		table.attributes.border = "1";
+		header.innerHTML = "<th>name</th><th>id</th><th>email</th><th>balance</th>";
+		table.appendChild(header);
+
+		for (let i = 0; i < clients.length; i++) {
+			const client      = clients[i],
+			      row         = document.createElement('tr'),
+			      nameColumn  = document.createElement('td'),
+			      idColumn    = document.createElement('td'),
+			      emailColumn = document.createElement('td'),
+			      moneyColumn = document.createElement('td');
+
+			nameColumn.innerText = client.name;
+			idColumn.innerHTML = '<a href="client?clientId=' + client.id + '">' + client.id + '</a>';
+			emailColumn.innerText = client.email;
+			moneyColumn.innerText = client.userMoney;
+
+			row.appendChild(nameColumn);
+			row.appendChild(idColumn);
+			row.appendChild(emailColumn);
+			row.appendChild(moneyColumn);
+			table.appendChild(row);
+		}
+		tableContainer.replaceWith(table);
+	}
+</script>
+</html>

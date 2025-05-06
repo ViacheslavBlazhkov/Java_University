@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Bank</title>
+</head>
+<body>
+	<p>Add Client</p>
+	<form id="clientForm">
+		<label for="name">Name: </label>
+		<input type="text" id="name" placeholder="Name">
+		<br>
+		<label for="email">Email: </label>
+		<input type="text" id="email" placeholder="Email">
+		<br>
+	</form>
+	<button onclick="return registryUser()">Registry Client</button>
+	<p><a href="/clients">Back to clients</a></p>
+	<p><a href="/">Back to menu</a></p>
+</body>
+<script>
+	function registryUser() {
+		const http = new XMLHttpRequest();
+		const params = {
+			name:  document.querySelector('#name').value,
+			email: document.querySelector('#email').value
+		};
+		http.open('POST', '/api/clients', true);
+		http.onload = function () {
+			if (http.status !== 200) {
+				alert(http.responseText);
+				return;
+			}
+			window.location.replace('/clients');
+		};
+		http.onerror = function () {
+			alert(http.responseText);
+		};
+		http.setRequestHeader('Content-Type', 'application/json');
+		http.send(JSON.stringify(params));
+	}
+</script>
+</html>

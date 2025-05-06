@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Bank</title>
+</head>
+<body>
+	<h3>Choose user for money movement report</h3>
+	<form th:object="${depositRequest}">
+		<div th:if="${#fields.hasErrors()}">
+			<span class="validationError">
+				Please correct the problems below and resubmit.
+			</span>
+		</div>
+		<label for="client">Client:</label>
+		<select id="client" th:field="*{clientId}">
+			<option value="-1">select option</option>
+			<option th:each="option : ${clients}" th:value="${option.id}" th:text="${option.email}"></option>
+		</select>
+		<br>
+	</form>
+	<button id="get">Get</button>
+	<div id="tableContainer">
+		---
+	</div>
+	<p><a href="/">Back to main menu</a></p>
+</body>
+<script>
+	const get = document.getElementById('get');
+	get.addEventListener('click', function () {
+		loadTransactions();
+	})
+
+	function loadTransactions() {
+		const request  = new XMLHttpRequest(),
+		      clientId = document.getElementById('client').value;
+		console.log(clientId)
+		try {
+			request.open('GET', 'http://localhost:8080/api/clients/' + clientId + '/transactions', true);
+			request.responseType = 'json';
+			request.onreadystatechange = function () {
+				if (this.readyState === 4 && this.status === 200) {
+					renderTransactions(this.response);
+				}
+			};
+			request.send();
+		} catch (e) {
+			renderError();
+		}
+	}
+
+	function renderError() {
+		const tableContainer = document.getElementById('tableContainer');
+		tableContainer.innerText = "Something went wrong";
+	}
+
+	function renderTransactions(transactions) {
+		const tableContainer = document.getElementById("tableContainer"),
+		      table          = document.createElement("table"),
+		      header         = document.createElement("tr");
+
+		header.innerHTML = "<th>type</th><th>date</th><th>amount</th>";
+		table.appendChild(header);
+
+		for (let i = 0; i < transactions.length; i++) {
+			const transaction = transactions[i],
+			      row         = document.createElement("tr"),
+			      typeColumn  = document.createElement("td"),
+			      dateColumn  = document.createElement("td"),
+			      moneyColumn = document.createElement("td");
+
+			typeColumn.innerText = transaction.type;
+			dateColumn.innerText = transaction.transactionDate.day + '-' + transaction.transactionDate.month + '-' + transaction.transactionDate.year;
+			moneyColumn.innerText = transaction.amount;
+
+			row.appendChild(typeColumn);
+			row.appendChild(dateColumn);
+			row.appendChild(moneyColumn);
+			table.appendChild(row);
+		}
+		tableContainer.innerHTML = table.outerHTML;
+	}
+</script>
+</html>

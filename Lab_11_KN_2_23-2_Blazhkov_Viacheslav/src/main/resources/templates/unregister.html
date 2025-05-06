@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Bank</title>
+</head>
+<body>
+	<h3>Choose user for unregister</h3>
+	<label for="client">Client:</label>
+	<select id="client">
+		<option value="-1">select option</option>
+		<option th:each="option : ${clients}" th:value="${option.id}" th:text="${option.email}"></option>
+	</select>
+	<br>
+	<button id="delete">Delete</button>
+	<p><a href="/">Back to main menu</a></p>
+</body>
+<script>
+	const deleteBtn = document.getElementById('delete');
+	deleteBtn.addEventListener('click', function () {
+		deleteUser();
+	})
+
+	function deleteUser() {
+		const request  = new XMLHttpRequest(),
+		      clientId = document.getElementById('client').value;
+
+		try {
+			request.open('DELETE', 'http://localhost:8080/api/clients/' + clientId, true);
+			request.responseType = 'json';
+			request.onreadystatechange = function () {
+				if (this.readyState === 4 && this.status === 200) {
+					window.location.href = '/clients';
+				}
+			};
+			request.send();
+		} catch (e) {
+			renderError();
+		}
+	}
+
+	function renderError() {
+		const tableContainer = document.getElementById('tableContainer');
+		tableContainer.innerText = "Something went wrong";
+	}
+</script>
+</html>
