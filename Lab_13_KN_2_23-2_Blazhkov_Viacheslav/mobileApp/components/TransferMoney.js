@@ -22,7 +22,6 @@ export default function TransferMoneyForm({navigation, fromClientId, clients, on
 				month:        parseInt(month),
 				year:         parseInt(year),
 			};
-			console.log(transferRequest);
 
 			await transferMoney(transferRequest);
 

@@ -11,11 +11,8 @@ export default function AddClientForm({clientAdded}) {
 			name,
 			email,
 		};
-
 		await addClient(client);
-
 		clientAdded();
-
 		setName('');
 		setEmail('');
 

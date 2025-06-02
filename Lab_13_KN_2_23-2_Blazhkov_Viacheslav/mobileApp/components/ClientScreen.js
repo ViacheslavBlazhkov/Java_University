@@ -29,7 +29,7 @@ export function ClientScreen({navigation, route}) {
 	const fetchTransactionsByDates = useCallback(async () => {
 		try {
 			const response = await getTransactionsByDates(clientId, fromDate, toDate);
-			setTransactionsByDates(response.data); // Оновлення стану транзакцій
+			setTransactionsByDates(response.data);
 		} catch (error) {
 			console.log(error);
 		}
