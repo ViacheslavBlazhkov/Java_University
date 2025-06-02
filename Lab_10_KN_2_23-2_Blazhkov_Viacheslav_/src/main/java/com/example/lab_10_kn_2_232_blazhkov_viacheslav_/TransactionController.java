@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @RestController
 public class TransactionController {
@@ -54,6 +56,21 @@ public class TransactionController {
             throw new ClientNotFoundException(clientId);
         }
         return client.getTransactionsByType(type);
+    }
+
+    @GetMapping("/clients/{clientId}/transactions_dates")
+    public List<Transaction> clientTransactionsByDates(@PathVariable long clientId, @RequestParam String fromDate, @RequestParam String toDate) {
+        var bank = Utils.getBank();
+        var client = bank.findClient(clientId);
+        if (client == null) {
+            throw new ClientNotFoundException(clientId);
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate from = LocalDate.parse(fromDate, formatter);
+        LocalDate to = LocalDate.parse(toDate, formatter);
+
+        return client.getTransactionsByDates(from, to);
     }
 
     @PostMapping("/clients/{clientId}/transactions")

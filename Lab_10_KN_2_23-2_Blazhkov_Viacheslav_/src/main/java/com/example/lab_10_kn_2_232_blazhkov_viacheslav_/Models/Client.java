@@ -4,8 +4,8 @@ package com.example.lab_10_kn_2_232_blazhkov_viacheslav_.Models;
 import com.example.lab_10_kn_2_232_blazhkov_viacheslav_.Exceptions.NotEnoughMoneyException;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.boot.autoconfigure.pulsar.PulsarProperties;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Client {
@@ -74,6 +74,25 @@ public class Client {
             }
         }
         return types;
+    }
+
+    public ArrayList<Transaction> getTransactionsByDates(LocalDate fromDate, LocalDate toDate) {
+        var filteredTransactions = new ArrayList<Transaction>();
+
+        for (Transaction transaction : transactions) {
+            TransactionDate transactionDateObj = transaction.getTransactionDate();
+            LocalDate transactionDate = LocalDate.of(
+                    transactionDateObj.getYear(),
+                    transactionDateObj.getMonth(),
+                    transactionDateObj.getDay()
+            );
+            if ((transactionDate.isEqual(fromDate) || transactionDate.isAfter(fromDate)) &&
+                    (transactionDate.isEqual(toDate) || transactionDate.isBefore(toDate))) {
+                filteredTransactions.add(transaction);
+            }
+        }
+
+        return filteredTransactions;
     }
 
     public long getId() {
